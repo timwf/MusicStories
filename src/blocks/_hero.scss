@@ -1,0 +1,123 @@
+.hero {
+    &.slick-dotted.slick-slider {
+    margin: 0;
+    }
+
+    .slick-track {
+        display: flex !important;
+    }
+
+    .slick-slide {
+        height: inherit !important;
+    }
+
+    &_sec {
+        overflow: hidden;
+    }
+
+    &__item {
+        display: flex !important;
+        outline: none;
+        align-items: center;
+        justify-content: center;
+        background-size: cover;
+        background-position: center top;
+        padding-top: 12.916666666666668vw;
+        padding-bottom: 10.416666666666668vw;
+
+        @media (max-width:1440px) {
+            padding-top: 10.972222222222221vw;
+            padding-bottom: 10.625vw;
+        }
+
+        @media (max-width:767px) {
+            padding-top: 80px;
+            padding-bottom: 70px;
+
+        }
+
+        &__copy {
+            &__img {
+                margin: 0 0 53px;
+
+                @media (max-width:1440px) {
+                    margin: 0 0 33px;
+                }
+
+                img {
+                    width: auto;
+                    margin: 0 auto;
+                    height: 21.927083333333332vw;
+
+                    @media (max-width:1440px) {
+                        height: 40vw;
+                    }
+                }
+            }
+
+            &__text {
+                padding: 0 10px;
+                color: #FFF;
+                text-align: center;
+                margin: 0 auto;
+                max-width: 459px;
+
+                p {
+                    a {
+                        color: #FFF;
+                        text-decoration: underline;
+                        &:hover {
+                            color: #00b1ad;
+                        }
+                    }
+                }
+
+                strong {
+                    font-family: 'HelveticaNeue-BoldCond';
+                    display: block;
+                    text-transform: uppercase;
+                }
+
+                .btn-sec {
+                    padding-top: 6px;
+                }
+            }
+        }
+    }
+
+    .slick-dots {
+        bottom: 18px;
+
+        li {
+            width: 10px;
+            height: 10px;
+            margin: 10px;
+
+            &:first-child:last-child {
+                display: none;
+            }
+
+            &.slick-active {
+                button {
+                    background-color: #FFF;
+                }
+            }
+
+            button {
+                appearance: none;
+                margin: 0;
+                padding: 0;
+                width: 10px;
+                height: 10px;
+                border-radius: 10px;
+                border: solid 1px #FFF;
+                opacity: 1;
+                background-color: transparent;
+
+                &:before {
+                    display: none;
+                }
+            }
+        }
+    }
+}

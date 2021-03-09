@@ -1,0 +1,30 @@
+@import "utils/vars";
+@import "utils/fonts";
+@import "utils/libs";
+@import "utils/aos";
+@import "utils/lity";
+@import "utils/global";
+@import "utils/slick";
+@import "utils/slick-theme";
+
+/*
+ * HERE YOUR GLOBAL STYLES
+ */
+html {
+	font-size: 16px;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+@import "blocks/_blocks";
+@import "blocks/hero";
+@import "blocks/slider";
+@import "blocks/expandable";
+@import "blocks/page-content";
+@import "blocks/stories-grid";
+
+// Responsive styles
+@import "utils/media";

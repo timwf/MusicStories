@@ -1,0 +1,84 @@
+.standard-editor h1 {
+    margin: 0 0 40px;
+    color: #000000;
+    padding: 0;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 44px;
+    line-height: normal;
+}
+
+.standard-editor h3 {
+    font-size: 22px;
+    margin: 0;
+    font-family: 'HelveticaNeue-BoldCond';
+    text-transform: uppercase;
+    color: #000;
+}
+
+.standard-editor.page-content {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 31px 0;
+}
+
+.standard-editor.page-content.top_space {
+    margin-top: 120px;
+}
+
+.standard-editor.page-content.bottom_space {
+    margin-bottom: 154px;
+}
+
+.error404-content .standard-editor.page-content {
+    padding-bottom: 234px;
+    padding-top: 120px;
+    margin: 0;
+}
+
+.standard-editor .description {
+    margin: 0 0 52px;
+}
+
+.standard-editor .description .sub-title p {
+    font-size: 22px;
+    margin: 0;
+    font-family: 'HelveticaNeue-BoldCond';
+    text-transform: uppercase;
+    color: #000;
+}
+
+.standard-editor .description .intro-text p {
+    font-size: 22px;
+    margin: 0;
+    font-family: 'HelveticaNeue-Roman';
+    color: #000;
+}
+
+.standard-editor .btn-section .btn {
+    padding: 8px 23px;
+}
+
+@media screen and (max-width:767px) {
+    .error404-content .standard-editor.page-content {
+        padding-bottom: 80px;
+        padding-top: 60px;
+    }
+    .standard-editor .description .sub-title p,
+    .standard-editor .description .intro-text p {
+        font-size: 18px;
+    }
+    .standard-editor.page-content.top_space {
+        margin-top: 60px;
+    }
+    .standard-editor.page-content.bottom_space {
+        margin-bottom: 80px;
+    }
+    .standard-editor h1 {
+        margin: 0 0 26px;
+        font-size: 38px;
+    }
+    .standard-editor .description {
+        margin: 0 0 36px;
+    }
+}

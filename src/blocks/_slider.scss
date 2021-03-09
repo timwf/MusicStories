@@ -1,0 +1,130 @@
+.slider {
+
+    &.slick-dotted.slick-slider {
+    margin: 0;
+    }
+
+
+    &_sec {
+        overflow: hidden;
+    }
+
+    &__item {
+        display: flex !important;
+        align-items: flex-end;
+        background-size: cover;
+        background-position: center top;
+        padding-top: 12.916666666666668vw;
+        padding-bottom: 12.36111111111111vw;
+        outline: none;
+
+        min-height: 55.55555555555556vw;
+
+        @media (max-width:1440px) {
+            padding-top: 10.972222222222221vw;
+            padding-bottom: 12.36111111111111vw;
+        }
+
+        @media (max-width:767px) {
+            padding-top: 80px;
+            padding-bottom: 70px;
+        }
+
+        @media (max-width:567px) {
+            min-height: 100vw;
+        }
+
+        &__copy {
+            width: 49.9%;
+            min-height: 199px;
+            color: #FFF;
+
+            @media (max-width:1199px) {
+                min-height: inherit;
+            }
+
+            @media (max-width:767px) {
+                width: 100%;
+            }
+            .slider-icon {
+                margin: 0 0 30px;
+                img {
+                    display: block;
+                    max-width: 60%;
+                    margin: 0 auto;
+                }
+            }
+            &__text {
+                .s-head {
+                    margin: 0 0 21px;
+                    padding: 0;
+                    font-family: 'MasqualeroWXX-DemiBold';
+                    font-weight: normal;
+                    color: $color-white;
+                    text-transform: uppercase;
+
+                    @media (max-width:767px) {
+                        margin: 0 0 7px;
+                    }
+                }
+
+                h3 {
+                    margin: 0 0 33px;
+                    color: $color-white;
+                    font-family: 'HelveticaNeue-BoldCond';
+                    font-weight: normal;
+                    text-transform: uppercase;
+                    line-height: 1.2;
+
+                    @media (max-width:767px) {
+                        margin: 0 0 15px;
+                        font-size: 18px;
+                    }
+
+                    a {
+                        color: $color-white;
+                        &:hover {
+                            color: #000;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .slick-dots {
+        bottom: 18px;
+
+        li {
+            width: 10px;
+            height: 10px;
+            margin: 10px;
+
+            &:last-child:first-child {
+                display: none;
+            }
+
+            &.slick-active {
+                button {
+                    background-color: #FFF;
+                }
+            }
+
+            button {
+                appearance: none;
+                margin: 0;
+                padding: 0;
+                width: 10px;
+                height: 10px;
+                border-radius: 10px;
+                border: solid 1px #FFF;
+                opacity: 1;
+                background-color: transparent;
+
+                &:before {
+                    display: none;
+                }
+            }
+        }
+    }
+}
