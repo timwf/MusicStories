@@ -11,7 +11,7 @@
                 <h3>
                     <?php 
                         $id = get_the_ID();
-                        $title = get_the_title();
+                        $title = get_the_title();                        
                         $terms = wp_get_post_terms( $id, 'story_category'); 
                     ?>
                         <?php echo $title; ?><br/>
@@ -21,8 +21,10 @@
                         }
                     ?>
                     <?php 
-                        $cat_str = implode(', ', $cat_list);
-                        echo $cat_str; 
+                    if($cat_list){
+                      $cat_str = implode(', ', $cat_list);
+                      echo $cat_str; 
+                    }
                     ?>
                 </h3>
             <?php }elseif($select_post_meta_data == 'manual'){ ?>
@@ -30,7 +32,7 @@
                     <?php echo $meta_data; ?>
                 </h3>
             <?php }else{ ?><?php } ?>
-            
+           
         <?php echo $content; ?>
 
     </div>

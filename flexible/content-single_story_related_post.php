@@ -9,17 +9,30 @@
 
     <?php 
     //Get array of terms
-    $terms = get_the_terms( $id , 'story_category', 'string');
+    $terms = get_the_terms( $id , 'story_category', 'string'); 
+
+    //quick and dirty - allows this flexible block to be used for Retailers cpt
+    //TODO - tidy this up - make available for all taxonomies
+    if($terms){
+      $postType = 'story';
+      $taxonomyName = 'story_category';
+    }
+    else{
+      $terms = get_the_terms( $id , 'retailer_category', 'string'); 
+      $postType = 'retailer';
+      $taxonomyName = 'retailer_category';
+    }
+
     //Pluck out the IDs to get an array of IDS
     $term_ids = wp_list_pluck($terms,'term_id');
 
     //Query posts with tax_query. Choose in 'IN' if want to query posts with any of the terms
     //Chose 'AND' if you want to query for posts with all terms
     $second_query = new WP_Query( array(
-        'post_type' => 'story',
+        'post_type' => $postType,
         'tax_query' => array(
             array(
-                'taxonomy' => 'story_category',
+                'taxonomy' => $taxonomyName,
                 'field' => 'id',
                 'terms' => $term_ids,
                 'operator'=> 'IN' //Or 'AND' or 'NOT IN'

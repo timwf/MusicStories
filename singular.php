@@ -36,8 +36,48 @@ get_header();
 			}
 		}
 	endif;
-
 	?>
+
+  
+
+  <?php
+  if ( is_product() ){  
+    global $woocommerce, $product, $post;
+    $this_seller = $post->post_author;
+  ?>
+<div class="storylist-grid_with_loadmore">
+<div class="s-grid storylist-grid">
+
+<?php 
+    $args = array(
+        'posts_per_page' => '-1',
+        'product_cat' => 'lesson',
+        'post_type' => 'product',
+        'order'      => 'ASC'
+    );
+      $loop = new WP_Query( $args );
+
+    while ( $loop->have_posts() ) {
+        $loop->the_post();         
+        ?>
+
+     <?php _get_template_part('/template-parts/product-grid', ['product' => $product, 'this_seller' => $this_seller ]); ?>
+
+    
+      <?php  
+        $seller = get_post_field( 'post_author', $product->get_id());          
+        $author  = get_user_by( 'id', $seller ); 
+        isset($author->nickname) ? $sellerName = $author->nickname : $sellerName =  "no nickname!";    
+      ?>
+
+    <?php }?>
+</div>
+</div>
+
+<?php
+
+    }
+  ?>
 
 </main><!-- #site-content -->
 

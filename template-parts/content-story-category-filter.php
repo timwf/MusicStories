@@ -1,11 +1,17 @@
 <?php
+$tax = $template_args['taxonomy'];
+
+
 $args = array(
-	'taxonomy' => 'story_category',
+	'taxonomy' => $tax,
 	'orderby' => 'name',
 	'parent' => 0,
 	'order'   => 'ASC'
 );
 $cats = get_terms($args);
+
+
+
 ?>
 
 <div class="story-filter__sec">
@@ -19,7 +25,7 @@ $cats = get_terms($args);
 		?>
 			<li class="has-sub-item">
 				<a href="<?php echo $cat_link; ?>">
-					<?php echo $cat->name; ?>
+					<?php echo $cat->name?>
 				</a>
 
 				<?php

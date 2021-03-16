@@ -8,20 +8,24 @@ function custom_post_type() {
 
 	$postTypes = array(
 		"story" => "Story",
+    "retailer" => "Retailer",
 	);
 
-	$categoryPostTypes = array('story'); 
+	$categoryPostTypes = array('story', 'retailer'); 
 
 	$sortOrder = 5;
 	foreach($postTypes as $postTypeSlug=>$postType){
+
+    //adds plural for story ie "Stories"
+    $postType == "Story" ? $pluralPostType = "Stories" : $pluralPostType = $postType . 's';
 
 		// Set UI labels for Custom Post Type
 		$labels = array(
 			'name'                => _x( $postType.'s', 'Post Type General Name', 'tbwdf' ),
 			'singular_name'       => _x( $postType, 'Post Type Singular Name', 'tbwdf' ),
-			'menu_name'           => __( $postType.'s', 'tbwdf' ),
+			'menu_name'           => __( $pluralPostType, 'tbwdf' ),
 			'parent_item_colon'   => __( 'Parent '.$postType, 'tbwdf' ),
-			'all_items'           => __( 'All '.$postType.'s', 'tbwdf' ),
+			'all_items'           => __( 'All '. $pluralPostType, 'tbwdf' ),
 			'view_item'           => __( 'View '.$postType, 'tbwdf' ),
 			'add_new_item'        => __( 'Add New '.$postType, 'tbwdf' ),
 			'add_new'             => __( 'Add New', 'tbwdf' ),

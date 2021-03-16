@@ -202,6 +202,7 @@ function twentytwenty_register_styles()
 	wp_enqueue_style('twentytwenty-print-style', get_template_directory_uri() . '/print.css', null, $theme_version, 'print');
 	wp_enqueue_style('twentytwenty-main-style', get_template_directory_uri() . '/assets/css/main.css', null, $theme_version, 'all');
 	wp_enqueue_style('twentytwenty-custom-style', get_template_directory_uri() . '/assets/css/custom.css', null, $theme_version, 'all');
+  wp_enqueue_style('twentytwenty-post-prod-style', get_template_directory_uri() . '/assets/css/post-prod.css', null, $theme_version, 'all');
 }
 
 add_action('wp_enqueue_scripts', 'twentytwenty_register_styles');
@@ -812,6 +813,17 @@ if (function_exists('acf_add_options_page')) {
 	));
 }
 
+//add params to get template parts
+
+function _get_template_part($file, $template_args = array())
+{
+  $template_args = wp_parse_args($template_args);
+  $file = get_template_directory() . '/' . $file . '.php';
+  ob_start();
+  $return = require $file;
+  echo ob_get_clean();
+}
+
 
 
 function filter_data()
@@ -887,3 +899,282 @@ function filter_data()
 
 add_action("wp_ajax_filter_data", "filter_data");
 add_action("wp_ajax_nopriv_filter_data", "filter_data");
+
+
+
+//add custom fields to vendor registration form
+
+
+
+/**
+ * Register term fields
+ */
+
+add_action( 'init', 'register_vendor_custom_fields' );
+function register_vendor_custom_fields() {
+	add_action( WC_PRODUCT_VENDORS_TAXONOMY . '_add_form_fields', 'add_vendor_custom_fields' );
+	add_action( WC_PRODUCT_VENDORS_TAXONOMY . '_edit_form_fields', 'edit_vendor_custom_fields', 10 );
+	add_action( 'edited_' . WC_PRODUCT_VENDORS_TAXONOMY, 'save_vendor_custom_fields' );
+	add_action( 'created_' . WC_PRODUCT_VENDORS_TAXONOMY, 'save_vendor_custom_fields' );
+}
+
+/**
+ * Add term fields form
+ */
+function add_vendor_custom_fields() {
+
+	wp_nonce_field( basename( __FILE__ ), 'vendor_custom_fields_nonce' );
+	?>
+
+	<div class="form-field">
+		<label for="facebook"><?php _e( 'Facebook', 'domain' ); ?></label>
+		<input type="url" name="facebook" id="facebook" value="" />
+	</div>
+
+	<div class="form-field">
+		<label for="twitter"><?php _e( 'Twitter', 'domain' ); ?></label>
+		<input type="url" name="twitter" id="twitter" value="" />
+	</div>
+
+  <div class="form-field">
+		<label for="intrument"><?php _e( 'Instrument', 'domain' ); ?></label>
+    <input name="instrument" id="instrument" value="">
+	</div>
+	<?php
+}
+/**
+ * Edit term fields form
+ */
+
+function edit_vendor_custom_fields( $term ) {
+	wp_nonce_field( basename( __FILE__ ), 'vendor_custom_fields_nonce' );
+	?>
+	<tr class="form-field">
+		<th scope="row" valign="top"><label for="facebook"><?php _e( 'Facebook', 'domain' ); ?></label></th>
+		<td>
+			<input type="url" name="facebook" id="facebook" value="<?php echo esc_url( get_term_meta( $term->term_id, 'facebook', true ) ); ?>" />
+		</td>
+	</tr>
+
+
+	<tr class="form-field">
+		<th scope="row" valign="top">
+      <label for="twitter"><?php _e( 'Twitter', 'domain' ); ?></label>
+    </th>
+		<td>
+			<input type="url" name="twitter" id="twitter" value="<?php echo esc_url( get_term_meta( $term->term_id, 'twitter', true ) ); ?>" />
+		</td>
+	</tr>
+
+  <tr class="form-field">
+		<th scope="row" valign="top">
+    <label for="instrument"><?php _e( 'Instrument', 'domain' ); ?></label>
+    </th>
+		<td>
+    <input name="instrument" id="instrument" value="<?php echo esc_url( get_term_meta( $term->term_id, 'instrument', true ) ); ?>"/>
+
+
+		</td>
+	</tr>
+
+
+	<?php
+}
+/**
+ * Save term fields
+ */
+
+function save_vendor_custom_fields( $term_id ) {
+	if ( ! wp_verify_nonce( $_POST['vendor_custom_fields_nonce'], basename( __FILE__ ) ) ) {
+		return;
+	}
+
+	$old_fb      = get_term_meta( $term_id, 'facebook', true );
+	$old_twitter = get_term_meta( $term_id, 'twitter', true );
+
+  $old_instrument = get_term_meta( $term_id, 'instrument', true );
+
+	$new_fb      = esc_url( $_POST['facebook'] );
+	$new_twitter = esc_url( $_POST['twitter'] );
+
+  $new_instrument = esc_url( $_POST['instrument'] );
+
+  if ( ! empty( $old_twitter ) && $new_twitter === '' ) {
+		delete_term_meta( $term_id, 'instrument' );
+	} else if ( $old_twitter !== $new_twitter ) {
+		update_term_meta( $term_id, 'instrument', $new_instrument, $old_instrument );
+	}
+
+	if ( ! empty( $old_fb ) && $new_fb === '' ) {
+		delete_term_meta( $term_id, 'facebook' );
+	} else if ( $old_fb !== $new_fb ) {
+		update_term_meta( $term_id, 'facebook', $new_fb, $old_fb );
+	}
+
+	if ( ! empty( $old_twitter ) && $new_twitter === '' ) {
+		delete_term_meta( $term_id, 'twitter' );
+	} else if ( $old_twitter !== $new_twitter ) {
+		update_term_meta( $term_id, 'twitter', $new_twitter, $old_twitter );
+	}
+}
+
+
+add_action( 'wcpv_registration_form', 'vendors_reg_custom_fields' );
+
+function vendors_reg_custom_fields() {
+	?>
+	<p class="form-row form-row-first">
+		<label for="wcpv-facebook"><?php esc_html_e( 'Facebook', 'domain' ); ?></label>
+		<input type="text" class="input-text" name="facebook" id="wcpv-facebook" value="<?php if ( ! empty( $_POST['facebook'] ) ) echo esc_attr( trim( $_POST['facebook'] ) ); ?>" />
+	</p>
+
+	<p class="form-row form-row-last">
+		<label for="wcpv-twitter"><?php esc_html_e( 'Twitter', 'woocommerce-product-vendors' ); ?></label>
+		<input type="text" class="input-text" name="twitter" id="wcpv-twitter" value="<?php if ( ! empty( $_POST['twitter'] ) ) echo esc_attr( trim( $_POST['twitter'] ) ); ?>" />
+	</p>
+
+  <div class="form-row form-row-last">
+		<label for="wcpv-intrument"><?php _e( 'Instrument', 'woocommerce-product-vendors' ); ?></label>
+    <input name="instrument" id="wcpv-instrument" value="<?php if ( ! empty( $_POST['instrument'] ) ) echo esc_attr( trim( $_POST['instrument'] ) ); ?>" />
+
+	</div>
+
+	<?php
+}
+
+
+add_filter( 'wcpv_shortcode_registration_form_validation_errors', 'vendors_reg_custom_fields_validation', 10, 2 );
+
+
+
+
+
+
+
+
+function vendors_reg_custom_fields_validation( $errors, $form_items ) {
+	if ( filter_var( $form_items['facebook'], FILTER_VALIDATE_URL ) === false ) {
+		$errors['facebook'] = __( 'Facebook field format is not correct. Please enter your Facebook page URL.', 'domain' );
+	}
+
+	if ( filter_var( $form_items['twitter'], FILTER_VALIDATE_URL ) === false ) {
+		$errors['twitter'] = __( 'Twitter field format is not correct. Please enter your Twitter profile URL.', 'domain' );
+	}
+
+  // if ( filter_var( $form_items['instrument'], FILTER_VALIDATE_URL ) === false ) {
+	// 	$errors['instrument'] = __( 'Twitter field format is not correct. Please enter your Twitter profile URL.', 'domain' );
+	// }
+
+
+	return $errors;
+
+}
+
+
+add_action( 'wcpv_shortcode_registration_form_process', 'vendors_reg_custom_fields_save', 10, 2 );
+
+function vendors_reg_custom_fields_save( $args, $items ) {
+	$term = get_term_by( 'name', $items['vendor_name'], WC_PRODUCT_VENDORS_TAXONOMY );
+
+	if ( isset( $items['facebook'] ) && ! empty( $items['facebook'] ) ) {
+		$fb = esc_url( $items['facebook'] );
+		update_term_meta( $term->term_id, 'facebook', $fb );
+	}
+
+  if ( isset( $items['instrument'] ) && ! empty( $items['instrument'] ) ) {
+		$ins = esc_url( $items['instrument'] );
+		update_term_meta( $term->term_id, 'instrument', $ins );
+	}
+
+	if ( isset( $items['twitter'] ) && ! empty( $items['twitter'] ) ) {
+		$twitter = esc_url( $items['twitter'] );
+		update_term_meta( $term->term_id, 'twitter', $twitter );
+	}
+}
+
+
+
+
+//add ciustom taxonomy for products
+
+add_action( 'init', 'custom_taxonomy_Intrument' );
+function custom_taxonomy_Intrument()  {
+$labels = array(
+    'name'                       => 'Instruments',
+    'singular_name'              => 'Instrument',
+    'menu_name'                  => 'Instrument',
+    'all_items'                  => 'All Instruments',
+    'parent_item'                => 'Parent Instrument',
+    'parent_item_colon'          => 'Parent Instrument:',
+    'new_item_name'              => 'New Instrument Name',
+    'add_new_item'               => 'Add New Instrument',
+    'edit_item'                  => 'Edit Instrument',
+    'update_item'                => 'Update Instrument',
+    'separate_items_with_commas' => 'Separate Instrument with commas',
+    'search_items'               => 'Search Instruments',
+    'add_or_remove_items'        => 'Add or remove Instruments',
+    'choose_from_most_used'      => 'Choose from the most used Instruments',
+);
+$args = array(
+    'labels'                     => $labels,
+    'hierarchical'               => true,
+    'public'                     => true,
+    'show_ui'                    => true,
+    'show_admin_column'          => true,
+    'show_in_nav_menus'          => true,
+    'show_tagcloud'              => true,
+);
+register_taxonomy( 'instrument', 'product', $args );
+register_taxonomy_for_object_type( 'instrument', 'product' );
+}
+
+
+
+
+//hide categories from vendors
+
+// add_action( 'init', 'change_links' );
+
+// function change_links($arr) {
+//   $arr = array(
+//     'read_product'             => false,
+//     'manage_product'           => false,
+//     'edit_products'            => false,
+//     'edit_product'             => false,
+//     'edit_published_products'  => false,
+//     'edit_shop_orders'         => false,
+//     'assign_product_terms'     => false,
+//     'upload_files'             => false,
+//     'read'                     => false,
+//     'edit_others_products'     => false,
+//     'delete_posts'             => false,
+//     'delete_product'           => false,
+//     'edit_comment'             => false,
+//     'edit_comments'            => false,
+//     'view_woocommerce_reports' => false,
+//     'publish_products'         => false,
+//       );
+//   return $arr;
+// }
+
+// add_filter( 'wcpv_default_admin_vendor_role_caps', 'change_links', 10, 2 );
+
+
+
+//removes main description for products
+function remove_product_editor() {
+  remove_post_type_support( 'product', 'editor' );
+}
+add_action( 'init', 'remove_product_editor' );
+
+function remove_short_description() {
+ 
+  remove_meta_box( 'postexcerpt', 'product', 'normal');
+   
+  }
+  add_action('add_meta_boxes', 'remove_short_description', 999);
+
+
+
+
+

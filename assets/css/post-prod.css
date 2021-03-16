@@ -1,0 +1,12 @@
+.s-grid__img-container{
+  position: relative;
+  padding-top: 100%;
+}
+
+.s-grid__img-container img{
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}

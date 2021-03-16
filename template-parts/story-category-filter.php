@@ -1,5 +1,6 @@
 
 <?php 
+/*
 	$args = array(
 		'taxonomy' => 'story_category',
 		'orderby' => 'name',
@@ -12,15 +13,15 @@
 <div class="story-filter__sec">
     <ul class="story-filter site-padding">
 		<li>
-            <a class="active filter_all" href="javascript:void(0);">ALL</a>
-        </li>
+      <a class="active filter_all" href="javascript:void(0);">ALL</a>
+    </li>
 		<?php
 			foreach($cats as $cat) {
 			$cat_link = get_term_link( $cat->term_id );
 		?>
 			<li class="has-sub-item">
 				<a href="<?php echo $cat_link; ?>">
-					<?php echo $cat->name; ?>
+					<?php echo $cat->name;  ?>
 				</a>
 
 				<?php 

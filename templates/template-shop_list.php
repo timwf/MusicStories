@@ -2,7 +2,7 @@
 
 /**
  * 
- * Template Name: Story List
+ * Template Name: Shop List
  * 
  *
  * @package WordPress
@@ -10,7 +10,7 @@
  * @since 1.0
  */
 
-/* get_header();
+get_header();
 
 ?>
 
@@ -23,20 +23,16 @@
 	endwhile; ?>
 <?php } ?>
 
-
 <!------ Filter Category Start -------->
 
-<?php // get_template_part('template-parts/content', 'story-category-filter'); ?> 
-
-
-<?php _get_template_part('/template-parts/content-story-category-filter', ['taxonomy' => 'story_category']); ?>
+<?php _get_template_part('/template-parts/content-story-category-filter', ['taxonomy' => 'retailer_category']); ?>
 
 <!------ Filter Category End -------->
 
 
 <?php
 $args = array(
-	'post_type' => 'story',
+	'post_type' => 'retailer',
 	'posts_per_page' => 6,
 	'post_status' => 'publish'
 );

@@ -1,6 +1,7 @@
 jQuery(document).ready(function () {
     jQuery(".story-filter__sec .story-filter .clickable_filter_item").on("click", function () {
         filter_story_list();
+
     })
 
     jQuery(".story-btn-bar .btn_load_more").on("click", function () {
@@ -8,6 +9,7 @@ jQuery(document).ready(function () {
         jQuery(".story-filter__sec .story-filter .sub-filter .active-item .clickable_filter_item").each(function () {
             var dId = jQuery(this).attr("data-id");
             story_cat_array.push(dId);
+            
         })
         filterPost("loadmore", story_cat_array)
     })
@@ -24,6 +26,7 @@ function filter_story_list() {
     jQuery(".story-filter__sec .story-filter .sub-filter .active-item .clickable_filter_item").each(function () {
         var dId = jQuery(this).attr("data-id");
         story_cat_array.push(dId);
+        console.log(story_cat_array);
     })
     filterPost("filter", story_cat_array)
 }

@@ -2,7 +2,7 @@
 
 /**
  * 
- * Template Name: Learn Page
+ * Template Name: Stroy New
  * 
  *
  * @package WordPress
@@ -24,7 +24,11 @@ get_header();
 	endwhile; ?>
 <?php } ?>
 
+<!------ Filter Category Start -------->
 
+<?php //get_template_part('template-parts/content', 'story-category-filter'); ?>
+
+<!------ Filter Category End -------->
 
 <?php
 $login_text_and_link = get_field('login_text_and_link');
@@ -43,7 +47,7 @@ if ($login_text_and_link) {
 <?php
 $args = array(
 	'post_type' => 'story',
-	'posts_per_page' => 6,
+	'posts_per_page' => -1,
 	'post_status' => 'publish'
 );
 $list = new WP_Query($args);
@@ -56,7 +60,7 @@ $list = new WP_Query($args);
   <?php 
       $args = array(
           'posts_per_page' => '-1',
-          'product_cat' => 'lesson',
+          'product_cat' => 'profile',
           'post_type' => 'product',
           'order'      => 'ASC'
       );
@@ -65,20 +69,11 @@ $list = new WP_Query($args);
       while ( $loop->have_posts() ) {
           $loop->the_post();         
           ?>
+
         <?php _get_template_part('/template-parts/product-grid', ['product' => $product]); ?>
+        
       <?php }?>
 	</div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 <?php get_footer(); ?>
